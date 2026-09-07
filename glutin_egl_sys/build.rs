@@ -49,6 +49,9 @@ fn main() {
             "EGL_KHR_wait_sync",
             "EGL_MESA_platform_gbm",
             "EGL_NV_context_priority_realtime",
+            "EGL_MESA_image_dma_buf_export",
+            "EGL_EXT_image_dma_buf_import",
+            "EGL_EXT_image_dma_buf_import_modifiers",
         ]);
 
         if target.contains("ios") {
