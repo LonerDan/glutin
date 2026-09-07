@@ -8,6 +8,7 @@
 
 use std::ffi::{self, CString};
 use std::ops::{Deref, DerefMut};
+use std::collections::HashSet;
 
 use glutin_egl_sys::egl;
 
@@ -122,4 +123,18 @@ fn check_error() -> Result<()> {
 
         Err(Error::new(Some(raw_code as i64), None, kind))
     }
+}
+
+use display::{extensions_from_ptr, get_extensions, CLIENT_EXTENSIONS};
+
+pub fn client_extensions() -> Result<&'static HashSet<&'static str>> {
+    let egl = match EGL.as_ref() {
+        Some(egl) => egl,
+        None => return Err(ErrorKind::NotFound.into()),
+    };
+
+    let client_extensions =
+        CLIENT_EXTENSIONS.get_or_init(|| get_extensions(egl, egl::NO_DISPLAY));
+    
+    Ok(client_extensions)
 }
